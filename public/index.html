@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to Markdown Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HTML to Markdown Converter</h1>
+        </header>
+        <main>
+            <div class="editor-container">
+                <div class="input-section">
+                    <label for="html-input">HTML Input</label>
+                    <textarea id="html-input" placeholder="Paste your HTML here..."></textarea>
+                </div>
+                <div class="controls">
+                    <button id="convert-btn">Convert &rarr;</button>
+                </div>
+                <div class="output-section">
+                    <label for="markdown-output">Markdown Output</label>
+                    <textarea id="markdown-output" readonly placeholder="Markdown will appear here..."></textarea>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
