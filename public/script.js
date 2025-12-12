@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const htmlInput = document.getElementById('html-input');
     const markdownOutput = document.getElementById('markdown-output');
     const convertBtn = document.getElementById('convert-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const htmlUpload = document.getElementById('html-upload');
+    const downloadBtn = document.getElementById('download-btn');
 
-    // Load saved state from localStorage
     if (localStorage.getItem('htmlInput')) {
         htmlInput.value = localStorage.getItem('htmlInput');
     }
@@ -16,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('markdownOutput', markdownOutput.value);
     };
 
-    // Initialize Turndown service
     const turndownService = new TurndownService({
         headingStyle: 'atx',
         codeBlockStyle: 'fenced'
@@ -29,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         replacement: function (content, node) {
             const language = node.getAttribute('data-code-prettify') || '';
             
-            // Helper to preserve newlines and handle <br>
             function getText(n) {
                 let text = '';
                 n.childNodes.forEach(c => {
@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to perform conversion
     const convert = () => {
         const html = htmlInput.value;
         if (!html.trim()) {
@@ -66,10 +65,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Event listeners
     convertBtn.addEventListener('click', convert);
     htmlInput.addEventListener('input', saveState);
-    
-    // Optional: Live conversion as you type (debounce could be added for performance)
-    // htmlInput.addEventListener('input', convert);
+
+    uploadBtn.addEventListener('click', () => {
+        htmlUpload.click();
+    });
+
+    htmlUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            htmlInput.value = e.target.result;
+            saveState();
+        };
+        reader.readAsText(file);
+    });
+
+    // Download functionality
+    downloadBtn.addEventListener('click', () => {
+        const markdown = markdownOutput.value;
+        if (!markdown) return;
+
+        const blob = new Blob([markdown], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'converted.md';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
 });

@@ -49,10 +49,32 @@ main {
     flex-direction: column;
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
 label {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     display: block;
+}
+
+.secondary-btn {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+    background-color: #bdc3c7;
 }
 
 textarea {

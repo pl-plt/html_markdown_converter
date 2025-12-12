@@ -2,6 +2,10 @@
 
 A simple web application to convert HTML to Markdown, running in a Docker container.
 
+Copy and paste your HTML code and get the Markdown equivalent.
+
+### Live demo available at: [https://pl-plt.github.io/html_markdown_converter/](https://pl-plt.github.io/html_markdown_converter/)
+
 ## Quick Start with Docker
 
 Build the image:

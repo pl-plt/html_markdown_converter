@@ -15,14 +15,21 @@
         <main>
             <div class="editor-container">
                 <div class="input-section">
-                    <label for="html-input">HTML Input</label>
+                    <div class="section-header">
+                        <label for="html-input">HTML Input</label>
+                        <input type="file" id="html-upload" accept=".html,.htm" style="display: none;">
+                        <button id="upload-btn" class="secondary-btn">Upload HTML</button>
+                    </div>
                     <textarea id="html-input" placeholder="Paste your HTML here..."></textarea>
                 </div>
                 <div class="controls">
                     <button id="convert-btn">Convert &rarr;</button>
                 </div>
                 <div class="output-section">
-                    <label for="markdown-output">Markdown Output</label>
+                    <div class="section-header">
+                        <label for="markdown-output">Markdown Output</label>
+                        <button id="download-btn" class="secondary-btn">Download Markdown</button>
+                    </div>
                     <textarea id="markdown-output" readonly placeholder="Markdown will appear here..."></textarea>
                 </div>
             </div>
