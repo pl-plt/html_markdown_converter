@@ -16,6 +16,8 @@ docker run -p 3000:3000 html-markdown-converter
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+And now, you can just paste your HTML text in the left textarea and click "Convert to Markdown" to see the result on the right!
+
 ## How it Works
 
 - **Frontend**: A simple HTML/JS interface using [Turndown](https://github.com/mixmark-io/turndown) for conversion.
