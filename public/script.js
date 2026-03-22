@@ -23,30 +23,39 @@ document.addEventListener('DOMContentLoaded', () => {
         codeBlockStyle: 'fenced'
     });
 
-    turndownService.addRule('codeContainer', {
-        filter: function (node) {
-            return node.nodeName === 'DIV' && node.classList.contains('code-container');
-        },
-        replacement: function (content, node) {
-            const language = node.getAttribute('data-code-prettify') || '';
-            
-            function getText(n) {
-                let text = '';
-                n.childNodes.forEach(c => {
-                    if (c.nodeType === 3) { // Text node
-                        text += c.nodeValue;
-                    } else if (c.nodeName === 'BR') {
-                        text += '\n';
-                    } else {
-                        text += getText(c);
-                    }
-                });
-                return text;
+    function extractCodeText(n) {
+        let text = '';
+        n.childNodes.forEach(c => {
+            if (c.nodeType === 3) {
+                text += c.nodeValue;
+            } else if (c.nodeName === 'BR') {
+                text += '\n';
+            } else if (c.nodeName === 'DIV' || c.nodeName === 'P') {
+                const inner = extractCodeText(c);
+                text += inner;
+                if (inner && !inner.endsWith('\n')) text += '\n';
+            } else {
+                text += extractCodeText(c);
             }
+        });
+        return text;
+    }
 
-            return '\n```' + language + '\n' + getText(node).trim() + '\n```\n';
-        }
-    });
+    function preprocessHTML(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        doc.querySelectorAll('div.code-container').forEach(container => {
+            const language = container.getAttribute('data-code-prettify') || '';
+            const text = extractCodeText(container).trim();
+            const pre = doc.createElement('pre');
+            const code = doc.createElement('code');
+            if (language) code.className = 'language-' + language;
+            code.textContent = text; 
+            pre.appendChild(code);
+            container.parentNode.replaceChild(pre, container);
+        });
+        return doc.body.innerHTML;
+    }
 
     const convert = () => {
         const html = htmlInput.value;
@@ -56,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            const markdown = turndownService.turndown(html);
+            const markdown = turndownService.turndown(preprocessHTML(html));
             markdownOutput.value = markdown;
             saveState();
         } catch (error) {
